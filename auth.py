@@ -85,16 +85,16 @@ def signin_user(email: str, password: str):
         user = db.query(User).filter(User.email == email.lower().strip()).first()
         
         if not user:
-            return False, None, None, "Email not found. Please sign up first."
+            return False, None, None, None, "Email not found. Please sign up first."
         
         if not user.is_active:
-            return False, None, None, "Account is deactivated. Contact support."
+            return False, None, None, None, "Account is deactivated. Contact support."
         
         if not user.password_hash:
-            return False, None, None, "Please use Google Sign In for this account."
+            return False, None, None, None, "Please use Google Sign In for this account."
         
         if not verify_password(password, user.password_hash):
-            return False, None, None, "Incorrect password."
+            return False, None, None, None, "Incorrect password."
         
         # Check if entity setup is complete (for clients)
         entity_id = None
@@ -109,18 +109,16 @@ def signin_user(email: str, password: str):
             else:
                 st.session_state.setup_complete = False
         
-        return True, user.user_id, user.role.value, entity_id
+        # RETURN 5 VALUES: Success, UserID, Role, EntityID, Message
+        return True, user.user_id, user.role.value, entity_id, "Login Successful"
     
     except Exception as e:
-        return False, None, None, f"Login error: {str(e)}"
+        return False, None, None, None, f"Login error: {str(e)}"
     finally:
         db.close()
 
-# Google OAuth (Simplified - Full implementation needs OAuth2 setup)
+# Google OAuth Placeholder
 def google_signin():
     st.info("🚧 Google Sign-In integration coming soon! For now, use email/password.")
-    # Full implementation requires:
-    # 1. Google Cloud Console OAuth2 credentials
-    # 2. streamlit-oauth library
-    # 3. Callback URL configuration
     return False, None, None, None
+    
