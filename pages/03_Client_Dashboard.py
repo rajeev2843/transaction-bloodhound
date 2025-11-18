@@ -1,4 +1,29 @@
 import streamlit as st
+# ... imports ...
+
+# 1. Check Auth
+if not st.session_state.get('authenticated'):
+    st.switch_page("pages/02_Login.py")
+
+# 2. Check Role
+if st.session_state.role != 'client':
+    st.error("Unauthorized")
+    st.stop()
+
+# 3. Custom Navigation (Hides CA Dashboard from Sidebar)
+st.markdown("""
+<style>
+    /* Hide the 4th page (CA Dashboard) in the sidebar */
+    [data-testid="stSidebarNav"] ul li:nth-child(4) {display: none;}
+    /* Hide Landing and Login (1st and 2nd) */
+    [data-testid="stSidebarNav"] ul li:nth-child(1) {display: none;}
+    [data-testid="stSidebarNav"] ul li:nth-child(2) {display: none;}
+</style>
+""", unsafe_allow_html=True)
+
+# ... Rest of your dashboard code ...
+
+import streamlit as st
 from utils.styling import inject_custom_css, metric_card, risk_badge
 from auth import logout_user
 from database import get_session, Vendor, RiskLevel
