@@ -1,5 +1,14 @@
 streamlit
+sqlalchemy
 pandas
 plotly
 openpyxl
 numpy
+bcrypt
+python-jose[cryptography]
+httpx
+google-auth
+google-auth-oauthlib
+python-dotenv
+streamlit-extras
+streamlit-option-menu
